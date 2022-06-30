@@ -145,8 +145,8 @@ class SegmentTreeLP {
         // in case of partial overlap
         // recurr for the left and right sub-tree
         int mid = (tl + tr) >> 1;
-        update(2 * idx + 1, tl, mid, l, r, val);
-        update(2 * idx + 2, mid + 1, tr, l, r, val);
+        rangeUpdate(2 * idx + 1, tl, mid, l, r, val);
+        rangeUpdate(2 * idx + 2, mid + 1, tr, l, r, val);
         seg[idx] = merge(seg[2 * idx + 1], seg[2 * idx + 2]);
     }
 
@@ -203,10 +203,17 @@ public:
 
 
 int main() {
-    vector<int> arr = {2, 1, 0, 5, 9, 8};
-    int n = 6;
+    vector<int> arr = {1, 2, 3, 4, 5};
+    int n = 5;
     SegmentTreeLP<int> sgt(n);
     sgt.build(arr);
-    cout << sgt.query(0, 3) << endl;
+    sgt.rangeUpdate(2, 4, 1);
+    sgt.rangeUpdate(1, 4, 1);
+    sgt.rangeUpdate(1, 3, 1);
+    cout << sgt.query(0, 0) << endl;
+    cout << sgt.query(1, 1) << endl;
+    cout << sgt.query(2, 2) << endl;
+    cout << sgt.query(3, 3) << endl;
+    cout << sgt.query(4, 4) << endl;
     return 0;
 } 
