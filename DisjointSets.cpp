@@ -17,7 +17,7 @@ public:
         }
     }
     
-    void unionOperation(int v, int u) {
+    void unionByRank(int v, int u) {
         u = findParent(u);
         v = findParent(v);
 
@@ -28,8 +28,7 @@ public:
         else if (rank[v] < rank[u])
             parent[v] = u; // if u has higher rank, then attach v to u
         else {
-            parent[v] = u; // if both of them have the same rank, then it doesn't matter
-                        // to whom we are attching.		
+            parent[v] = u; // if both of them have the same rank, then it doesn't matter to whom we are attching.		
             rank[u]++;     // increase the rank of the node to which the other node is attached by 1
 	    }
     }
@@ -40,6 +39,44 @@ public:
         return parent[u] = findParent(parent[u]); // path compression
     }   
 };
+
+class DisjointSetBySize {
+    int n;
+    vector<int> parent, size;
+
+public: 
+    DisjointSetBySize(int n) {
+        this->n = n;
+        parent.resize(n);
+        size.resize(n);
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int findParent(int u) {
+        if (parent[u] == u)
+            return u;
+        return parent[u] = findParent(parent[u]); // path compression
+    }   
+
+    void unionBySize(int u, int v) {
+        int parentOfU = findParent(u);
+        int parentOfV = findParent(v);
+
+        if (parentOfU == parentOfV) return;
+
+        if (size[parentOfU] > size[parentOfV]) {
+            parent[parentOfV] = parentOfU;
+            size[parentOfU] += size[parentOfV];
+        } else {
+            parent[parentOfU] = parentOfV;
+            size[parentOfV] += size[parentOfU];
+        }
+    }
+}
 
 int main() {
 
